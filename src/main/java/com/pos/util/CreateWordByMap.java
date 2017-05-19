@@ -3,42 +3,33 @@ package com.pos.util;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
+
+import java.io.*;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 public class CreateWordByMap
 {
-    private Configuration configuration = null;
-    private Map<String, Template> allTemplates = null;
-    private SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-
-    public CreateWordByMap() {
-        this.configuration = new Configuration();
-        this.configuration.setDefaultEncoding("GBK");
+  private Configuration configuration = null;
+  private Map<String, Template> allTemplates = null;
+  private SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+  
+  public CreateWordByMap() {
+    this.configuration = new Configuration();
+    this.configuration.setDefaultEncoding("GBK");
+  }
+  
+  public File createWord1(Map dataMap) {
+    boolean flag = ((Boolean)dataMap.get("flag")).booleanValue();
+    if (flag) {
+      createWord(dataMap, "pos");
+      createWord(dataMap, "details");
+    } else {
+      createWord(dataMap, "pos");
     }
-
-    public File createWord1(Map dataMap) {
-        boolean flag = ((Boolean)dataMap.get("flag")).booleanValue();
-        if (flag) {
-            createWord(dataMap, "pos");
-            createWord(dataMap, "details");
-        } else {
-            createWord(dataMap, "pos");
-        }
-        return null;
-    }
+    return null;
+  }
 
     public File createWord(Map dataMap, String fileStr) {
         String cardStr = (String)dataMap.get("cardStr");
@@ -90,9 +81,9 @@ public class CreateWordByMap
         else {
             tempStr = "xd";
         }
-        File outFile = new File("../POS/" + userName + "/" + ushop + "/" +
+        File outFile = new File("C:/POS/" + userName + "/" + ushop + "/" +
                 tempStr + "_" + dateStr + "_" + ushop + ".doc");
-        File outDir = new File("../POS/" + userName + "/" + ushop + "/");
+        File outDir = new File("C:/POS/" + userName + "/" + ushop + "/");
 
         if (!outDir.exists()) {
             outDir.mkdirs();
@@ -118,63 +109,64 @@ public class CreateWordByMap
         }
         return outFile;
     }
-
-    public String cardString(String ushops, String unumber) {
-        String number = "";
-        if ("常州明都酒店".equals(ushops)) {
-            String str = "*********";
-
-            if (unumber != null) {
-                String a = unumber;
-                String bf = a.substring(0, 6);
-                String ft = a.substring(a.length() - 4, a.length());
-                number = bf + str + ft;
-            }
-        }
-        else if (("常州新城希尔顿酒店".equals(ushops)) ||
-                ("大润发（常州店）".equals(ushops)) || ("传奇人生音乐酒吧".equals(ushops)) || ("六福珠宝(常州新世纪商城)".equals(ushops))) {
-            String str = "******";
-
-            if (unumber != null) {
-                String a = unumber;
-                String bf = a.substring(0, 6);
-                String ft = a.substring(a.length() - 4, a.length());
-                number = bf + str + ft;
-            }
-        }
-        else if (("海澜之家（关河东路店）".equals(ushops)) || ("环洲绿岛咖啡延陵店".equals(ushops)) || ("常州泰富百货集团有限公司".equals(ushops))) {
-            String str = "******";
-
-            if (unumber != null) {
-                String a = unumber;
-                String bf = a.substring(0, 4);
-                String bf2 = a.substring(4, 6);
-                String ft = a.substring(a.length() - 4, a.length());
-                number = bf + " " + bf2 + str + ft;
-            }
-        } else if ("家乐福(乐家邹区店)".equals(ushops)) {
-            String str = " ";
-            if (unumber != null) {
-                String a = unumber;
-                String bf = a.substring(0, 4);
-                String bf2 = a.substring(4, 6);
-                String ft = "******";
-                String ft2 = a.substring(a.length() - 4, a.length());
-                number = bf + str + bf2 + str + ft + str + ft2;
-            }
-        } else if ("中国石油(关河东路店)".equals(ushops)) {
-            String str = " ";
-            String str1 = "**";
-            String str2 = "****";
-            if (unumber != null) {
-                String a = unumber;
-                String bf = a.substring(0, 4);
-                String bf2 = a.substring(4, 6);
-                String ft2 = a.substring(a.length() - 4, a.length());
-                number = bf + str + bf2 + str1 + str + str2 + ft2;
-            }
-        }
-
-        return number;
+  
+  public String cardString(String ushops, String unumber)
+  {
+    String number = "";
+    if ("常州明都酒店".equals(ushops)) {
+      String str = "*********";
+      
+      if (unumber != null) {
+        String a = unumber;
+        String bf = a.substring(0, 6);
+        String ft = a.substring(a.length() - 4, a.length());
+        number = bf + str + ft;
+      }
     }
+    else if (("常州新城希尔顿酒店".equals(ushops)) || 
+      ("大润发（常州店）".equals(ushops)) || ("传奇人生音乐酒吧".equals(ushops)) || ("六福珠宝(常州新世纪商城)".equals(ushops))) {
+      String str = "******";
+      
+      if (unumber != null) {
+        String a = unumber;
+        String bf = a.substring(0, 6);
+        String ft = a.substring(a.length() - 4, a.length());
+        number = bf + str + ft;
+      }
+    }
+    else if (("海澜之家（关河东路店）".equals(ushops)) || ("环洲绿岛咖啡延陵店".equals(ushops)) || ("常州泰富百货集团有限公司".equals(ushops))) {
+      String str = "******";
+      
+      if (unumber != null) {
+        String a = unumber;
+        String bf = a.substring(0, 4);
+        String bf2 = a.substring(4, 6);
+        String ft = a.substring(a.length() - 4, a.length());
+        number = bf + " " + bf2 + str + ft;
+      }
+    } else if ("家乐福(乐家邹区店)".equals(ushops)) {
+      String str = " ";
+      if (unumber != null) {
+        String a = unumber;
+        String bf = a.substring(0, 4);
+        String bf2 = a.substring(4, 6);
+        String ft = "******";
+        String ft2 = a.substring(a.length() - 4, a.length());
+        number = bf + str + bf2 + str + ft + str + ft2;
+      }
+    } else if ("中国石油(关河东路店)".equals(ushops)) {
+      String str = " ";
+      String str1 = "**";
+      String str2 = "****";
+      if (unumber != null) {
+        String a = unumber;
+        String bf = a.substring(0, 4);
+        String bf2 = a.substring(4, 6);
+        String ft2 = a.substring(a.length() - 4, a.length());
+        number = bf + str + bf2 + str1 + str + str2 + ft2;
+      }
+    }
+    
+    return number;
+  }
 }

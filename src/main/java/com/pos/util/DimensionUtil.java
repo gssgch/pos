@@ -3,6 +3,8 @@
 /*    */ import java.awt.Dimension;
 /*    */ import java.awt.Toolkit;
 /*    */ 
+/*    */ 
+/*    */ 
 /*    */ public class DimensionUtil
 /*    */ {
 /*    */   public static Dimension getDimension()
@@ -12,7 +14,8 @@
 /*    */   }
 /*    */ }
 
-/* Location:           F:\otec\pos软件\原始文件\20170517-1.jar
- * Qualified Name:     com.pos.util.DimensionUtil
- * JD-Core Version:    0.5.4
+
+/* Location:              F:\otec\pos软件\20170517\1.jar!\com\pos\util\DimensionUtil.class
+ * Java compiler version: 6 (50.0)
+ * JD-Core Version:       0.7.1
  */

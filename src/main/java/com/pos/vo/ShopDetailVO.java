@@ -2,55 +2,53 @@
 /*    */ 
 /*    */ import java.math.BigDecimal;
 /*    */ 
-/*    */ public class ShopDetailVO
-/*    */ {
+/*    */ public class ShopDetailVO {
 /*    */   private String name;
 /*    */   private BigDecimal unitPrice;
 /*  8 */   private int count = 1;
 /*    */   private BigDecimal unitPriceSrc;
 /*    */   private BigDecimal uintPirceSum;
 /*    */   private String detailsUnit;
-/*    */ 
-/*    */   public String getDetailsUnit()
-/*    */   {
+/*    */   
+/*    */   public String getDetailsUnit() {
 /* 14 */     return this.detailsUnit;
 /*    */   }
-/*    */   public void setDetailsUnit(String detailsUnit) {
-/* 17 */     this.detailsUnit = detailsUnit;
-/*    */   }
+/*    */   
+/* 17 */   public void setDetailsUnit(String detailsUnit) { this.detailsUnit = detailsUnit; }
+/*    */   
 /*    */   public BigDecimal getUintPirceSum() {
 /* 20 */     return this.uintPirceSum;
 /*    */   }
-/*    */   public void setUintPirceSum(BigDecimal uintPirceSum) {
-/* 23 */     this.uintPirceSum = uintPirceSum;
-/*    */   }
+/*    */   
+/* 23 */   public void setUintPirceSum(BigDecimal uintPirceSum) { this.uintPirceSum = uintPirceSum; }
+/*    */   
 /*    */   public BigDecimal getUnitPriceSrc() {
 /* 26 */     return this.unitPriceSrc;
 /*    */   }
-/*    */   public void setUnitPriceSrc(BigDecimal unitPriceSrc) {
-/* 29 */     this.unitPriceSrc = unitPriceSrc;
-/*    */   }
+/*    */   
+/* 29 */   public void setUnitPriceSrc(BigDecimal unitPriceSrc) { this.unitPriceSrc = unitPriceSrc; }
+/*    */   
 /*    */   public int getCount() {
 /* 32 */     return this.count;
 /*    */   }
-/*    */   public void setCount(int count) {
-/* 35 */     this.count = count;
-/*    */   }
+/*    */   
+/* 35 */   public void setCount(int count) { this.count = count; }
+/*    */   
 /*    */   public String getName() {
 /* 38 */     return this.name;
 /*    */   }
-/*    */   public void setName(String name) {
-/* 41 */     this.name = name;
-/*    */   }
+/*    */   
+/* 41 */   public void setName(String name) { this.name = name; }
+/*    */   
 /*    */   public BigDecimal getUnitPrice() {
 /* 44 */     return this.unitPrice;
 /*    */   }
-/*    */   public void setUnitPrice(BigDecimal unitPrice) {
-/* 47 */     this.unitPrice = unitPrice;
-/*    */   }
+/*    */   
+/* 47 */   public void setUnitPrice(BigDecimal unitPrice) { this.unitPrice = unitPrice; }
 /*    */ }
 
-/* Location:           F:\otec\pos软件\原始文件\20170517-1.jar
- * Qualified Name:     com.pos.vo.ShopDetailVO
- * JD-Core Version:    0.5.4
+
+/* Location:              F:\otec\pos软件\20170517\1.jar!\com\pos\vo\ShopDetailVO.class
+ * Java compiler version: 6 (50.0)
+ * JD-Core Version:       0.7.1
  */

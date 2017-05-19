@@ -11,13 +11,14 @@
 /*    */ import javax.swing.table.JTableHeader;
 /*    */ import javax.swing.table.TableCellRenderer;
 /*    */ 
+/*    */ 
 /*    */ public class CheckHeaderCellRender
 /*    */   implements TableCellRenderer
 /*    */ {
 /*    */   private TableModleProxy tableModel;
 /*    */   private JTableHeader tableHeader;
 /* 20 */   private JCheckBox selectBox = null;
-/*    */ 
+/*    */   
 /*    */   public CheckHeaderCellRender(JTable table) {
 /* 23 */     this.tableModel = ((TableModleProxy)table.getModel());
 /* 24 */     this.tableHeader = table.getTableHeader();
@@ -25,21 +26,21 @@
 /* 26 */     this.selectBox.setSelected(false);
 /* 27 */     this.tableHeader.addMouseListener(new MouseListener()
 /*    */     {
-/*    */       public void mouseReleased(MouseEvent e)
-/*    */       {
-/*    */       }
+/*    */       public void mouseReleased(MouseEvent e) {}
+/*    */       
 /*    */ 
-/*    */       public void mousePressed(MouseEvent e)
-/*    */       {
-/*    */       }
 /*    */ 
-/*    */       public void mouseExited(MouseEvent e)
-/*    */       {
-/*    */       }
+/*    */       public void mousePressed(MouseEvent e) {}
+/*    */       
 /*    */ 
-/*    */       public void mouseEntered(MouseEvent e)
-/*    */       {
-/*    */       }
+/*    */ 
+/*    */       public void mouseExited(MouseEvent e) {}
+/*    */       
+/*    */ 
+/*    */ 
+/*    */       public void mouseEntered(MouseEvent e) {}
+/*    */       
+/*    */ 
 /*    */ 
 /*    */       public void mouseClicked(MouseEvent e)
 /*    */       {
@@ -55,6 +56,7 @@
 /*    */       }
 /*    */     });
 /*    */   }
+/*    */   
 /*    */ 
 /*    */   public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column)
 /*    */   {
@@ -63,18 +65,19 @@
 /* 65 */     label.setHorizontalAlignment(0);
 /* 66 */     this.selectBox.setHorizontalAlignment(0);
 /* 67 */     this.selectBox.setBorderPainted(true);
-/* 68 */     JComponent component = (column == 0) ? this.selectBox : label;
-/*    */ 
+/* 68 */     JComponent component = column == 0 ? this.selectBox : label;
+/*    */     
 /* 70 */     component.setForeground(this.tableHeader.getForeground());
 /* 71 */     component.setBackground(this.tableHeader.getBackground());
 /* 72 */     component.setFont(this.tableHeader.getFont());
 /* 73 */     component.setBorder(UIManager.getBorder("TableHeader.cellBorder"));
-/*    */ 
+/*    */     
 /* 75 */     return component;
 /*    */   }
 /*    */ }
 
-/* Location:           F:\otec\pos软件\原始文件\20170517-1.jar
- * Qualified Name:     com.pos.table.CheckHeaderCellRender
- * JD-Core Version:    0.5.4
+
+/* Location:              F:\otec\pos软件\20170517\1.jar!\com\pos\table\CheckHeaderCellRender.class
+ * Java compiler version: 6 (50.0)
+ * JD-Core Version:       0.7.1
  */

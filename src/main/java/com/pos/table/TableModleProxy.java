@@ -9,52 +9,56 @@
 /*    */   private String[] title;
 /*    */   private Object[][] data;
 /*    */   private Map dataMap;
-/*    */ 
+/*    */   
 /*    */   public Map getDataMap()
 /*    */   {
 /* 15 */     return this.dataMap;
 /*    */   }
-/*    */ 
+/*    */   
 /*    */   public void setDataMap(Map dataMap) {
 /* 19 */     this.dataMap = dataMap;
 /*    */   }
-/*    */ 
+/*    */   
 /*    */   public String[] getTitle() {
 /* 23 */     return this.title;
 /*    */   }
-/*    */ 
+/*    */   
 /*    */   public void setTitle(String[] title) {
 /* 27 */     this.title = title;
 /*    */   }
-/*    */ 
+/*    */   
 /*    */   public Object[][] getData() {
 /* 31 */     return this.data;
 /*    */   }
-/*    */ 
+/*    */   
 /*    */   public void setData(Object[][] data) {
 /* 35 */     this.data = data;
 /*    */   }
-/*    */ 
+/*    */   
 /*    */   public TableModleProxy(String[] title, Object[][] data) {
 /* 39 */     this.data = data;
 /* 40 */     this.title = title;
 /* 41 */     this.dataMap = new HashMap();
 /*    */   }
-/*    */ 
+/*    */   
 /*    */   public String getColumnName(int column)
 /*    */   {
 /* 46 */     return this.title[column];
 /*    */   }
-/*    */ 
+/*    */   
 /*    */   public Class<?> getColumnClass(int columnIndex)
 /*    */   {
-/* 51 */     return (getValueAt(0, columnIndex) == null) ? new String("").getClass() : getValueAt(0, columnIndex).getClass();
+/* 51 */     return getValueAt(0, columnIndex) == null ? new String("").getClass() : getValueAt(0, columnIndex).getClass();
 /*    */   }
-/*    */ 
+/*    */   
 /*    */   public boolean isCellEditable(int rowIndex, int columnIndex)
 /*    */   {
-/* 57 */     return columnIndex == 0;
+/* 56 */     if (columnIndex == 0) {
+/* 57 */       return true;
+/*    */     }
+/* 59 */     return false;
 /*    */   }
+/*    */   
 /*    */ 
 /*    */   public void setValueAt(Object aValue, int rowIndex, int columnIndex)
 /*    */   {
@@ -69,29 +73,31 @@
 /*    */     }
 /* 74 */     fireTableCellUpdated(rowIndex, columnIndex);
 /*    */   }
-/*    */ 
+/*    */   
 /*    */   public int getRowCount()
 /*    */   {
 /* 79 */     return this.data.length;
 /*    */   }
-/*    */ 
+/*    */   
 /*    */   public int getColumnCount()
 /*    */   {
 /* 84 */     return this.title.length;
 /*    */   }
-/*    */ 
+/*    */   
 /*    */   public Object getValueAt(int rowIndex, int columnIndex)
 /*    */   {
 /* 89 */     return this.data[rowIndex][columnIndex];
 /*    */   }
-/*    */ 
+/*    */   
 /*    */   public void selectAllOrNull(boolean value) {
-/* 93 */     for (int index = 0; index < getRowCount(); ++index)
+/* 93 */     for (int index = 0; index < getRowCount(); index++) {
 /* 94 */       setValueAt(Boolean.valueOf(value), index, 0);
+/*    */     }
 /*    */   }
 /*    */ }
 
-/* Location:           F:\otec\pos软件\原始文件\20170517-1.jar
- * Qualified Name:     com.pos.table.TableModleProxy
- * JD-Core Version:    0.5.4
+
+/* Location:              F:\otec\pos软件\20170517\1.jar!\com\pos\table\TableModleProxy.class
+ * Java compiler version: 6 (50.0)
+ * JD-Core Version:       0.7.1
  */

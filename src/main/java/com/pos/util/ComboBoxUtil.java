@@ -1,67 +1,60 @@
-/*    */ package com.pos.util;
-/*    */ 
-/*    */ import com.pos.db.BaseDao;
-/*    */ import com.pos.vo.Item;
-/*    */ import java.sql.SQLException;
-/*    */ import java.util.List;
-/*    */ import java.util.Map;
-/*    */ import javax.swing.DefaultComboBoxModel;
-/*    */ import javax.swing.JComboBox;
-/*    */ 
-/*    */ public class ComboBoxUtil
-/*    */ {
-/*    */   private String sql;
-/*    */ 
-/*    */   public void setComboBox(JComboBox comb, String flag, String navigationId, String shopId)
-/*    */   {
-/* 16 */     List list = null;
-/* 17 */     if ("navigationComp".equals(flag)) {
-/* 18 */       this.sql = "select navigation_id ,navigation_name  from navigation where 1=1 ";
-/* 19 */       if ((navigationId != null) && (!"".equals(navigationId)))
-/* 20 */         this.sql = (this.sql + " and navigation_id='" + navigationId + "' ");
-/*    */     }
-/* 22 */     else if ("shopTypeComp".equals(flag)) {
-/* 23 */       this.sql = 
-/* 24 */         ("select type_id,type_name from shop_type where navigation_id='" + 
-/* 24 */         navigationId + "'");
-/* 25 */       if ((shopId != null) && (!"".equals(shopId)))
-/* 26 */         this.sql = (this.sql + " and type_id='" + shopId + "' ");
-/*    */     }
-/*    */     try
-/*    */     {
-/* 30 */       list = new BaseDao().queryDbBySql(this.sql);
-/* 31 */       if ((list != null) && (list.size() > 0)) {
-/* 32 */         DefaultComboBoxModel model = new DefaultComboBoxModel();
-/* 33 */         Map m = null;
-/* 34 */         Item it = null;
-/* 35 */         comb.setModel(model);
-/* 36 */         for (int i = 0; i < list.size(); ++i) {
-/* 37 */           it = new Item();
-/* 38 */           m = (Map)list.get(i);
-/* 39 */           it = new Item();
-/* 40 */           if ("navigationComp".equals(flag)) {
-/* 41 */             it.setKey((String)m.get("NAVIGATION_ID"));
-/* 42 */             it.setValue((String)m.get("NAVIGATION_NAME"));
-/* 43 */             if ((navigationId != null) && (!"".equals(navigationId)) && (it.getKey().equals(navigationId)))
-/* 44 */               comb.setSelectedItem(it);
-/*    */           }
-/* 46 */           else if ("shopTypeComp".equals(flag)) {
-/* 47 */             it.setKey((String)m.get("TYPE_ID"));
-/* 48 */             it.setValue((String)m.get("TYPE_NAME"));
-/* 49 */             if ((shopId != null) && (!"".equals(shopId)) && (it.getKey().equals(shopId))) {
-/* 50 */               comb.setSelectedItem(it);
-/*    */             }
-/*    */           }
-/* 53 */           model.addElement(it);
-/*    */         }
-/*    */       }
-/*    */     } catch (SQLException e) {
-/* 57 */       e.printStackTrace();
-/*    */     }
-/*    */   }
-/*    */ }
+package com.pos.util;
 
-/* Location:           F:\otec\pos软件\原始文件\20170517-1.jar
- * Qualified Name:     com.pos.util.ComboBoxUtil
- * JD-Core Version:    0.5.4
- */
+import com.pos.vo.Item;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Map;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
+
+public class ComboBoxUtil
+{
+  private String sql;
+  
+  public void setComboBox(JComboBox comb, String flag, String navigationId, String shopId)
+  {
+    List<Map> list = null;
+    if ("navigationComp".equals(flag)) {
+      this.sql = "select navigation_id ,navigation_name  from navigation where 1=1 ";
+      if ((navigationId != null) && (!"".equals(navigationId))) {
+        this.sql = (this.sql + " and navigation_id='" + navigationId + "' ");
+      }
+    } else if ("shopTypeComp".equals(flag)) {
+      this.sql = 
+        ("select type_id,type_name from shop_type where navigation_id='" + navigationId + "'");
+      if ((shopId != null) && (!"".equals(shopId))) {
+        this.sql = (this.sql + " and type_id='" + shopId + "' ");
+      }
+    }
+    try {
+      list = new com.pos.db.BaseDao().queryDbBySql(this.sql);
+      if ((list != null) && (list.size() > 0)) {
+        DefaultComboBoxModel model = new DefaultComboBoxModel();
+        Map m = null;
+        Item it = null;
+        comb.setModel(model);
+        for (int i = 0; i < list.size(); i++) {
+          it = new Item();
+          m = (Map)list.get(i);
+          it = new Item();
+          if ("navigationComp".equals(flag)) {
+            it.setKey((String)m.get("NAVIGATION_ID"));
+            it.setValue((String)m.get("NAVIGATION_NAME"));
+            if ((navigationId != null) && (!"".equals(navigationId)) && (it.getKey().equals(navigationId))) {
+              comb.setSelectedItem(it);
+            }
+          } else if ("shopTypeComp".equals(flag)) {
+            it.setKey((String)m.get("TYPE_ID"));
+            it.setValue((String)m.get("TYPE_NAME"));
+            if ((shopId != null) && (!"".equals(shopId)) && (it.getKey().equals(shopId))) {
+              comb.setSelectedItem(it);
+            }
+          }
+          model.addElement(it);
+        }
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+  }
+}
