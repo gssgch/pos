@@ -720,14 +720,6 @@ public class DateUtil
     return "";
   }
 
-
-
-
-
-
-
-
-
   public static String getDate(String dateStr, String typeName)
   {
     StringBuffer sb = new StringBuffer(dateStr + " ");

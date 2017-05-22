@@ -3,6 +3,7 @@ package com.pos.iframe;
 import com.pos.db.BaseDao;
 import com.pos.util.CalcProdList;
 import com.pos.util.DateUtil;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -30,8 +31,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 public class RegionIFrame
-        extends JInternalFrame
-{
+        extends JInternalFrame {
     private JTextField username;
     private JTextField cardJf;
     private JTextField cardValidJf;
@@ -47,6 +47,7 @@ public class RegionIFrame
     private Map selectCheckMap = new HashMap();
     private Map typeMap = new HashMap();
     private Map shopMap = new HashMap();
+    private Map shopDataIdMap = new HashMap();
     private Map dateMap = new HashMap();
     private Map amountMap = new HashMap();
     private Map foreignMap = new HashMap();
@@ -78,8 +79,7 @@ public class RegionIFrame
         setVisible(true);
     }
 
-    public void addJpanelObject(JPanel panel)
-    {
+    public void addJpanelObject(JPanel panel) {
         panel.setLayout(null);
 
 
@@ -87,14 +87,12 @@ public class RegionIFrame
         this.foreignLabel.setForeground(Color.red);
 
         this.foreignJf.setBounds(75, 5, 80, 20);
-        this.foreignJf.addKeyListener(new KeyListener()
-        {
+        this.foreignJf.addKeyListener(new KeyListener() {
             public void keyTyped(KeyEvent e) {
                 RegionIFrame.this.checkkeyTyped(e, "外汇汇率", RegionIFrame.this.foreignJf);
             }
 
-            public void keyReleased(KeyEvent e)
-            {
+            public void keyReleased(KeyEvent e) {
                 RegionIFrame.this.checkkeyReleased(e, "外汇汇率", RegionIFrame.this.foreignJf, "foreignJf");
                 String foreignJfStr = RegionIFrame.this.foreignJf.getText();
                 if ((foreignJfStr != null) && (!"".equals(foreignJfStr))) {
@@ -104,14 +102,14 @@ public class RegionIFrame
                     BigDecimal forT = new BigDecimal(foreignJfStr);
                     BigDecimal temp = null;
                     for (int i = 0; i < RegionIFrame.this.checksMap.size(); i++) {
-                        keyStr = ((JCheckBox)RegionIFrame.this.checksMap.get(i)).getName();
-                        foreignStr = ((JTextField)RegionIFrame.this.foreignMap.get(keyStr))
+                        keyStr = ((JCheckBox) RegionIFrame.this.checksMap.get(i)).getName();
+                        foreignStr = ((JTextField) RegionIFrame.this.foreignMap.get(keyStr))
                                 .getText();
                         try {
                             if ((foreignStr != null) && (!"".equals(foreignStr))) {
                                 temp = new BigDecimal(foreignStr);
                                 JTextField jf =
-                                        (JTextField)RegionIFrame.this.amountMap.get(keyStr);
+                                        (JTextField) RegionIFrame.this.amountMap.get(keyStr);
                                 jf.setText(forT.multiply(temp)
                                         .setScale(2, 4)
                                         .toPlainString());
@@ -124,10 +122,8 @@ public class RegionIFrame
             }
 
 
-
-
-
-            public void keyPressed(KeyEvent e) {}
+            public void keyPressed(KeyEvent e) {
+            }
         });
         this.foreignTip.setForeground(Color.blue);
         this.foreignTip.setBounds(20, 25, 700, 20);
@@ -184,8 +180,7 @@ public class RegionIFrame
         JButton queryBtn = new JButton("查询");
         queryBtn.setBounds(530, 60, 80, 20);
 
-        queryBtn.addActionListener(new ActionListener()
-        {
+        queryBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if ((RegionIFrame.this.username.getText() == null) || ("".equals(RegionIFrame.this.username.getText()))) {
                     JOptionPane.showMessageDialog(null, "用户信息不能为空！");
@@ -202,7 +197,7 @@ public class RegionIFrame
                 }
                 if ((list != null) && (list.size() != 0)) {
                     if (list.size() == 1) {
-                        Map map = (Map)list.get(0);
+                        Map map = (Map) list.get(0);
                         RegionIFrame.this.cardJf.setText(map.get("CARD_NO") == null ? null : map
                                 .get("CARD_NO").toString());
                         RegionIFrame.this.cardValidJf.setText(map.get("VALIDE_DATE") == null ? null :
@@ -214,7 +209,7 @@ public class RegionIFrame
                         String[] str = new String[list.size()];
                         for (int i = 0; i < list.size(); i++) {
                             StringBuffer sb = new StringBuffer();
-                            tempMap = (Map)list.get(i);
+                            tempMap = (Map) list.get(i);
                             sb.append("顺序:").append(i).append(" 用户名：")
                                     .append(tempMap.get("USER_NAME"))
                                     .append(", 卡号：")
@@ -225,7 +220,7 @@ public class RegionIFrame
                                     .append(tempMap.get("CARD_SELF"));
                             str[i] = sb.toString();
                         }
-                        String s = (String)JOptionPane.showInputDialog(null,
+                        String s = (String) JOptionPane.showInputDialog(null,
                                 "请确认用户信息:\n", "用户选择列表",
                                 -1, null, str, str[0]);
                         int index = 0;
@@ -238,7 +233,7 @@ public class RegionIFrame
                                 }
                             }
                         }
-                        Map map = (Map)list.get(index);
+                        Map map = (Map) list.get(index);
                         RegionIFrame.this.cardJf.setText(map.get("CARD_NO") == null ? null : map
                                 .get("CARD_NO").toString());
                         RegionIFrame.this.cardValidJf.setText(map.get("VALIDE_DATE") == null ? null :
@@ -270,8 +265,7 @@ public class RegionIFrame
         panel.add(cardSel);
         panel.add(this.cardSelJf);
 
-        try
-        {
+        try {
             getDetails(this.region, panel);
         } catch (Exception e1) {
             e1.printStackTrace();
@@ -279,10 +273,10 @@ public class RegionIFrame
         }
     }
 
-    public void getDetails(String region, JPanel panel) throws Exception
-    {
+    public void getDetails(String region, JPanel panel) throws Exception {
         this.sql =
-                ("select n.Navigation_ID, st.type_id, st.type_name, s.shop_id, s.shop_name from navigation n, shop_type st, shop s where n.Navigation_ID = st.Navigation_ID and st.type_id = s.shop_type_id and n.Navigation_name = '" + region + "' order by st.type_name, s.shop_name");
+                ("select n.Navigation_ID, st.type_id, st.type_name, s.shop_id, s.shop_name,s.shop_data_id" +
+                        ",s.shop_card_id from navigation n, shop_type st, shop s where n.Navigation_ID = st.Navigation_ID and st.type_id = s.shop_type_id and n.Navigation_name = '" + region + "' order by st.type_name, s.shop_name");
 
 
         List<Map> list = new BaseDao().queryDbBySql(this.sql);
@@ -305,9 +299,9 @@ public class RegionIFrame
 
             Map tempMap = null;
             for (int i = 0; i < list.size(); i++) {
-                tempMap = (Map)list.get(i);
-                String ss1 = (String)tempMap.get("TYPE_NAME");
-                String ss2 = (String)tempMap.get("SHOP_NAME");
+                tempMap = (Map) list.get(i);
+                String ss1 = (String) tempMap.get("TYPE_NAME");
+                String ss2 = (String) tempMap.get("SHOP_NAME");
                 t1 = ss1.length();
                 t2 = ss2.length();
                 if (t1 > ts1) {
@@ -327,7 +321,7 @@ public class RegionIFrame
             }
 
             for (int i = 0; i < list.size(); i++) {
-                shoppingMap = (Map)list.get(i);
+                shoppingMap = (Map) list.get(i);
                 String shopId = shoppingMap.get("SHOP_ID").toString();
                 String shopTypeId = shoppingMap.get("TYPE_ID").toString();
                 String str = "TYPEID:" + shopTypeId + "-id-SHOPID:" + shopId;
@@ -348,6 +342,16 @@ public class RegionIFrame
                         .toString());
                 shopName.setName(str);
 
+                // 添加一个数据类别
+//                final JLabel shopDataId = new JLabel(shoppingMap.get("SHOP_DATA_ID")
+//                        .toString());
+//                shopDataId.setName(str);
+//                shopDataId.setName(str);
+                final String shopDataId = shoppingMap.get("SHOP_DATA_ID").toString();
+                final String shopCardId = shoppingMap.get("SHOP_CARD_ID").toString();
+
+                System.out.println("==============print shopDataId=" + shopDataId+",,shopCardId="+shopCardId);
+
 
                 JLabel jla = new JLabel("打印日期：");
                 DateUtil ser = DateUtil.getInstance();
@@ -355,58 +359,51 @@ public class RegionIFrame
                 ser.register(text);
                 text.setName(str);
                 text.setEditable(false);
-                text.addFocusListener(new FocusListener()
-                {
+                text.addFocusListener(new FocusListener() {
                     public void focusLost(FocusEvent e) {
                         String textStr = text.getName();
                         String textDate = text.getText();
-                        Map tempMap = (Map)RegionIFrame.this.checkMap.get(textStr);
+                        Map tempMap = (Map) RegionIFrame.this.checkMap.get(textStr);
                         if (tempMap != null) {
                             tempMap.put("printDate", textDate);
                             RegionIFrame.this.checkMap.put(textStr, tempMap);
                         }
                     }
 
-
-
-
-
-                    public void focusGained(FocusEvent e) {}
+                    public void focusGained(FocusEvent e) {
+                    }
                 });
                 JLabel amountLabel = new JLabel("金  额：");
                 final JTextField amountJf = new JTextField();
                 amountJf.setName(str);
-                amountJf.addKeyListener(new KeyListener()
-                {
+                amountJf.addKeyListener(new KeyListener() {
                     public void keyTyped(KeyEvent e) {
                         RegionIFrame.this.checkkeyTyped(e, "金额", amountJf);
                     }
 
-                    public void keyReleased(KeyEvent e)
-                    {
+                    public void keyReleased(KeyEvent e) {
                         RegionIFrame.this.checkkeyReleased(e, "金额", amountJf, "amount");
                     }
 
 
-
-
-                    public void keyPressed(KeyEvent e) {}
+                    public void keyPressed(KeyEvent e) {
+                    }
                 });
                 this.checkBox.setBounds(10, h + (i + 1) * 30, 20, 20);
-                this.checkBox.addItemListener(new ItemListener()
-                {
+                this.checkBox.addItemListener(new ItemListener() {
                     public void itemStateChanged(ItemEvent e) {
-                        JCheckBox cb = (JCheckBox)e.getItem();
+                        JCheckBox cb = (JCheckBox) e.getItem();
                         String cbStr = cb.getName();
                         String typeNameStr = typeName.getText();
                         String shopNameStr = shopName.getText();
+                        String shopDataIdStr = shopDataId;
+                        String shopCardIdStr = shopCardId;
                         String printDate = text.getText();
                         String amount = amountJf.getText();
 
                         if (((printDate == null) || ("".equals(printDate))) &&
                                 (cb.isSelected()))
-                            try
-                            {
+                            try {
                                 JOptionPane.showMessageDialog(null, "打印日期不能为空！");
                                 throw new Exception("打印日期不能为空！");
                             } catch (Exception e1) {
@@ -430,6 +427,8 @@ public class RegionIFrame
                             a.put("printDate", printDate);
                             a.put("typeName", typeNameStr);
                             a.put("shopName", shopNameStr);
+                            a.put("shopDataId", shopDataIdStr);
+                            a.put("shopCardId", shopCardIdStr);
                             RegionIFrame.this.checkMap.put(cbStr, a);
                             RegionIFrame.this.selectCheckMap.put(cbStr, cb);
                         } else {
@@ -442,14 +441,12 @@ public class RegionIFrame
                 });
                 JLabel foreignL = new JLabel("外汇金额:");
                 final JTextField foreginAmount = new JTextField();
-                foreginAmount.addKeyListener(new KeyListener()
-                {
+                foreginAmount.addKeyListener(new KeyListener() {
                     public void keyTyped(KeyEvent e) {
                         RegionIFrame.this.checkkeyTyped(e, "外汇金额", foreginAmount);
                     }
 
-                    public void keyReleased(KeyEvent e)
-                    {
+                    public void keyReleased(KeyEvent e) {
                         RegionIFrame.this.checkkeyReleased(e, "外汇金额", foreginAmount,
                                 "foreginAmount");
                         String keyStr = null;
@@ -466,14 +463,13 @@ public class RegionIFrame
                                         foreginAmountStr).setScale(2,
                                         4);
                                 amountJf.setText(b.toPlainString());
-                                m = (Map)RegionIFrame.this.checkMap.get(keyStr);
+                                m = (Map) RegionIFrame.this.checkMap.get(keyStr);
                                 if ((m != null) && (m.size() > 0)) {
                                     m.put("amount", b.toPlainString());
                                     RegionIFrame.this.checkMap.put(keyStr, m);
                                 }
                                 RegionIFrame.this.amountMap.put(keyStr, amountJf);
-                            }
-                            catch (Exception e1) {
+                            } catch (Exception e1) {
                                 JOptionPane.showMessageDialog(null, "外汇汇率输入有误！");
                                 e1.printStackTrace();
                             }
@@ -481,9 +477,8 @@ public class RegionIFrame
                     }
 
 
-
-
-                    public void keyPressed(KeyEvent e) {}
+                    public void keyPressed(KeyEvent e) {
+                    }
                 });
                 typeName.setBounds(40, h + (i + 1) * 30, ts1 * 12, 20);
                 shopName.setBounds(50 + ts1 * 12, h + (i + 1) * 30, ts2 * 12,
@@ -502,6 +497,7 @@ public class RegionIFrame
                 panel.add(this.checkBox);
                 panel.add(typeName);
                 panel.add(shopName);
+//                panel.add(shopDataId);
                 panel.add(text);
                 panel.add(jla);
                 panel.add(amountLabel);
@@ -510,6 +506,7 @@ public class RegionIFrame
                 panel.add(foreginAmount);
                 this.typeMap.put(str, typeName);
                 this.shopMap.put(str, shopName);
+                this.shopDataIdMap.put(str, shopDataId);
                 this.dateMap.put(str, text);
                 this.amountMap.put(str, amountJf);
                 this.foreignMap.put(str, foreginAmount);
@@ -517,8 +514,7 @@ public class RegionIFrame
 
             JButton jb = new JButton("全选");
             jb.setBounds(20, h + (list.size() + 1) * 30, 60, 20);
-            jb.addActionListener(new ActionListener()
-            {
+            jb.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     RegionIFrame.this.setCheckBoxStatus(RegionIFrame.this.checksMap, true, "2");
                 }
@@ -529,8 +525,7 @@ public class RegionIFrame
             JButton canelBtn = new JButton("取消选中");
             canelBtn.setBounds(90, h + (list.size() + 1) * 30, 80, 20);
             panel.add(canelBtn);
-            canelBtn.addActionListener(new ActionListener()
-            {
+            canelBtn.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     RegionIFrame.this.setCheckBoxStatus(RegionIFrame.this.checksMap, false, "");
                 }
@@ -540,8 +535,7 @@ public class RegionIFrame
             JButton resetBtn = new JButton("重置");
             resetBtn.setBounds(180, h + (list.size() + 1) * 30, 80, 20);
             panel.add(resetBtn);
-            resetBtn.addActionListener(new ActionListener()
-            {
+            resetBtn.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     RegionIFrame.this.setCheckBoxStatus(RegionIFrame.this.checksMap, true, "1");
                 }
@@ -551,16 +545,14 @@ public class RegionIFrame
             this.button = new JButton();
             this.button.setText("生成文件");
             this.button.setBounds(320, h + (list.size() + 1) * 30, 100, 20);
-            this.button.addActionListener(new ActionListener()
-            {
-                public void actionPerformed(ActionEvent e)
-                {
+            this.button.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
                     if (RegionIFrame.this.checkMap.size() == 0) {
                         JOptionPane.showMessageDialog(null, "请选择一行记录！");
                         return;
                     }
 
-                    String region = (String)RegionIFrame.this.checkMap.get("region");
+                    String region = (String) RegionIFrame.this.checkMap.get("region");
                     Set<String> st = RegionIFrame.this.checkMap.keySet();
                     Map m = new HashMap();
                     String amountStr = "";
@@ -572,13 +564,12 @@ public class RegionIFrame
                                 (!"cardSelJfStr".equals(s)) &&
                                 (!"foreignJf".equals(s)) &&
                                 (!"foreginAmount".equals(s))) {
-                            m = (Map)RegionIFrame.this.checkMap.get(s);
-                            amountStr = (String)m.get("amount");
-                            String printDate = (String)m.get("printDate");
+                            m = (Map) RegionIFrame.this.checkMap.get(s);
+                            amountStr = (String) m.get("amount");
+                            String printDate = (String) m.get("printDate");
                             StringBuffer sb = new StringBuffer();
 
-                            if ((printDate == null) || ("".equals(printDate)))
-                            {
+                            if ((printDate == null) || ("".equals(printDate))) {
 
 
                                 sb.append("商店类型:").append(m.get("typeName")).append(",商店名称:").append(m.get("shopName")).append(",打印日期不能为空！");
@@ -597,19 +588,15 @@ public class RegionIFrame
                                         break;
                                     }
                                 }
-                                if (count == 2)
-                                {
-
+                                if (count == 2) {
 
 
                                     sb.append("商店类型:").append(m.get("typeName")).append(",商店名称:").append(m.get("shopName")).append(",金额输入有误！");
                                     JOptionPane.showMessageDialog(null,
                                             sb.toString());
                                 }
-                            }
-                            else if ((amountStr == null) ||
-                                    ("".equals(amountStr)))
-                            {
+                            } else if ((amountStr == null) ||
+                                    ("".equals(amountStr))) {
 
 
                                 sb.append("商店类型:").append(m.get("typeName")).append(",商店名称:").append(m.get("shopName")).append(",金额不能为空！");
@@ -643,6 +630,9 @@ public class RegionIFrame
                     dateMap.put("cardJfStr", cardJfStr);
                     dateMap.put("cardValidJfStr", cardValidJfStr);
                     dateMap.put("cardSelJfStr", cardSelJfStr);
+
+//                    RegionIFrame.this.checkMap.put();
+                    System.out.println("-----------dataIdSize="+RegionIFrame.this.shopDataIdMap.size());
                     dateMap.put("data", RegionIFrame.this.checkMap);
                     RegionIFrame.this.checkMap.remove("region");
 
@@ -675,16 +665,7 @@ public class RegionIFrame
     }
 
 
-
-
-
-
-
-
-
-
-    public String checkkeyTyped(KeyEvent e, String message, JTextField jf)
-    {
+    public String checkkeyTyped(KeyEvent e, String message, JTextField jf) {
         String str = "";
         int keyChar = e.getKeyChar();
         String s = jf.getText();
@@ -697,8 +678,7 @@ public class RegionIFrame
         }
         if (((keyChar < 48) || (keyChar > 57)) &&
                 (keyChar != 46) && (keyChar != 8) &&
-                (keyChar != 127))
-        {
+                (keyChar != 127)) {
             e.consume();
             JOptionPane.showMessageDialog(null, message + "只能输入有效数字！");
             str = message + "只能输入有效数字！";
@@ -706,8 +686,7 @@ public class RegionIFrame
         return str;
     }
 
-    public void checkkeyReleased(KeyEvent e, String message, JTextField jf, String flag)
-    {
+    public void checkkeyReleased(KeyEvent e, String message, JTextField jf, String flag) {
         String number = jf.getText();
         String temp = jf.getText();
         String numberName = jf.getName();
@@ -723,7 +702,7 @@ public class RegionIFrame
             }
             if (count == 2) {
                 e.consume();
-                Map tempMap = (Map)this.checkMap.get(numberName);
+                Map tempMap = (Map) this.checkMap.get(numberName);
                 if (tempMap != null) {
                     tempMap.put(flag, number);
                     this.checkMap.put(numberName, tempMap);
@@ -732,9 +711,8 @@ public class RegionIFrame
 
                 JOptionPane.showMessageDialog(null, message + "输入有误！");
             }
-        }
-        else if ((number == null) || ("".equals(number))) {
-            Map tempMap = (Map)this.checkMap.get(numberName);
+        } else if ((number == null) || ("".equals(number))) {
+            Map tempMap = (Map) this.checkMap.get(numberName);
             if (tempMap != null) {
                 tempMap.put(flag, number);
                 this.checkMap.put(numberName, tempMap);
@@ -743,15 +721,14 @@ public class RegionIFrame
             return;
         }
         if (this.checkMap.containsKey(numberName)) {
-            Map tempMap = (Map)this.checkMap.get(numberName);
+            Map tempMap = (Map) this.checkMap.get(numberName);
             tempMap.put(flag, number);
             this.checkMap.put(numberName, tempMap);
         }
     }
 
 
-    public void setCheckBoxStatus(List<JCheckBox> list, boolean flag, String flagStr)
-    {
+    public void setCheckBoxStatus(List<JCheckBox> list, boolean flag, String flagStr) {
         if ((list != null) && (list.size() > 0)) {
             JCheckBox j = null;
             JLabel typeLabel = null;
@@ -760,16 +737,16 @@ public class RegionIFrame
             JTextField amountJf1 = null;
             JTextField foreignJf1 = null;
             for (int i = 0; i < list.size(); i++) {
-                j = (JCheckBox)list.get(i);
+                j = (JCheckBox) list.get(i);
                 if (!flag) {
                     j.setSelected(false);
                 } else {
                     String s = j.getName();
-                    typeLabel = (JLabel)this.typeMap.get(s);
-                    shopLabel = (JLabel)this.shopMap.get(s);
-                    dateJf = (JTextField)this.dateMap.get(s);
-                    amountJf1 = (JTextField)this.amountMap.get(s);
-                    foreignJf1 = (JTextField)this.foreignMap.get(s);
+                    typeLabel = (JLabel) this.typeMap.get(s);
+                    shopLabel = (JLabel) this.shopMap.get(s);
+                    dateJf = (JTextField) this.dateMap.get(s);
+                    amountJf1 = (JTextField) this.amountMap.get(s);
+                    foreignJf1 = (JTextField) this.foreignMap.get(s);
                     if ("1".equals(flagStr)) {
                         dateJf.setText("");
                         amountJf1.setText("");
@@ -797,8 +774,12 @@ public class RegionIFrame
         }
     }
 
-    class CloseActionListener implements ActionListener { CloseActionListener() {}
+    class CloseActionListener implements ActionListener {
+        CloseActionListener() {
+        }
 
-        public void actionPerformed(ActionEvent e) { RegionIFrame.this.doDefaultCloseAction(); }
+        public void actionPerformed(ActionEvent e) {
+            RegionIFrame.this.doDefaultCloseAction();
+        }
     }
 }

@@ -13,10 +13,12 @@ import sun.misc.BASE64Encoder;
 
 public class CheckUtil
 {
+  // 校验 用户名和密码
   public static boolean checkValide(String paramString1, String paramString2)
     throws Exception
   {
     int i = 0;
+    boolean flag = false;
     InetAddress localInetAddress = InetAddress.getLocalHost();
     byte[] arrayOfByte = NetworkInterface.getByInetAddress(localInetAddress).getHardwareAddress();
     StringBuffer localStringBuffer = new StringBuffer("");
@@ -38,7 +40,9 @@ public class CheckUtil
     System.out.println(str2);
     if (!str2.equals(paramString2)) {
       i = 1;
+      flag=true;
     }
+//    return flag;
     return false;
   }
   

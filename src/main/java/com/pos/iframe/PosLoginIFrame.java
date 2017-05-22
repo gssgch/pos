@@ -77,7 +77,7 @@ public class PosLoginIFrame
     this.reset.setBounds(160, 80, 60, 30);
     
     this.login.addActionListener(new PosLoginAction());
-    this.reset.addActionListener(new PosResetAction(null));
+    this.reset.addActionListener(new PosResetAction());
     panel_2.add(this.login);
     panel_2.add(this.reset);
     
